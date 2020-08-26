@@ -8,7 +8,10 @@
 package frc.robot.commands.Drive;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
+import frc.robot.PortMap;
 import frc.robot.Robot;
+import frc.robot.commands.CommonFunctions;
 
 public class Drive extends CommandBase {
   /**
@@ -16,22 +19,32 @@ public class Drive extends CommandBase {
    */
   public Drive() {
     addRequirements(Robot.driveTrain);
-    
+
+
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    double leftDriverAxis = Robot.oi.getDriverJoystick().getRawAxis(PortMap.kSpeedAxisPort);
+    double rightDriverAxis = Robot.oi.getDriverJoystick().getRawAxis(PortMap.kTurnAxisPort);
+
+    leftDriverAxis = CommonFunctions.eliminateDeadZone(leftDriverAxis, Constants.joyDeadZone);
+    rightDriverAxis = CommonFunctions.eliminateDeadZone(rightDriverAxis, Constants.joyDeadZone);
+
+    Robot.driveTrain.setSpeed(leftDriverAxis-rightDriverAxis, leftDriverAxis+rightDriverAxis);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    Robot.driveTrain.stop();
   }
 
   // Returns true when the command should end.
@@ -39,4 +52,5 @@ public class Drive extends CommandBase {
   public boolean isFinished() {
     return false;
   }
+
 }

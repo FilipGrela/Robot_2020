@@ -25,29 +25,29 @@ public class DriveTrain extends SubsystemBase {
    * Creates a new DriveTrain.
    */
 
-   private WPI_TalonSRX lMaster, rMaster;
-   private WPI_VictorSPX  lSlaveF, lSlaveB, rSlaveF, rSlaveB; //F - Front , B - Back
+   private WPI_TalonSRX leftMaster, rightMaster;
+   private WPI_VictorSPX  leftSlaveFront, leftSlaveBack, rightSlaveFront, rightSlaveBack;
 
   public DriveTrain() {
-    lMaster = new WPI_TalonSRX(PortMap.kLMasterDrive);
-    rMaster = new WPI_TalonSRX(PortMap.kRMasterDrive);
+    leftMaster = new WPI_TalonSRX(PortMap.kLMasterDrive);
+    rightMaster = new WPI_TalonSRX(PortMap.kRMasterDrive);
 
-    lSlaveF = new WPI_VictorSPX(PortMap.kLSlaveMDrive);
-    lSlaveB = new WPI_VictorSPX(PortMap.kRSlaveBDrive);
-    rSlaveF = new WPI_VictorSPX(PortMap.kRSlaveMDrive);
-    rSlaveB = new WPI_VictorSPX(PortMap.kRSlaveBDrive);
+    leftSlaveFront = new WPI_VictorSPX(PortMap.kLSlaveMDrive);
+    leftSlaveBack = new WPI_VictorSPX(PortMap.kRSlaveBDrive);
+    rightSlaveFront = new WPI_VictorSPX(PortMap.kRSlaveMDrive);
+    rightSlaveBack = new WPI_VictorSPX(PortMap.kRSlaveBDrive);
 
-    configureMaster(lMaster, false);
-    configureMaster(rMaster, false);
+    configureMaster(leftMaster, false);
+    configureMaster(rightMaster, false);
 
-    lSlaveB.follow(lMaster);
-    lSlaveF.follow(lMaster);
-    rSlaveB.follow(lMaster);
-    rSlaveF.follow(lMaster);
-    stopAndReset();
+    leftSlaveBack.follow(leftMaster);
+    leftSlaveFront.follow(leftMaster);
+    rightSlaveBack.follow(leftMaster);
+    rightSlaveFront.follow(leftMaster);
+    stop();
   }
 
-  public void stopAndReset(){
+  public void stop(){
     setSpeed(0.0, 0.0);
   }
 
@@ -58,8 +58,8 @@ public class DriveTrain extends SubsystemBase {
 
   public void setSpeed(double leftSpeed, double rightSpeed){
 
-    lMaster.set(ControlMode.PercentOutput, leftSpeed);
-    rMaster.set(ControlMode.PercentOutput, rightSpeed);
+    leftMaster.set(ControlMode.PercentOutput, leftSpeed);
+    rightMaster.set(ControlMode.PercentOutput, rightSpeed);
   }
 
 
