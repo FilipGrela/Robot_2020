@@ -5,20 +5,30 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.subsystems;
+package frc.robot;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.Joystick;
+/**
+ * Add your docs here.
+ */
+public class OI {
 
-public class ExampleSubsystem extends SubsystemBase {
-  /**
-   * Creates a new ExampleSubsystem.
-   */
-  public ExampleSubsystem() {
+    public Joystick driver;
+    public Joystick operator;
 
-  }
+    public OI(){
+        
+        driver = new Joystick(0);
+        operator = new Joystick(1);
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
+    }
+
+    public  Joystick getDriverJoystick(){
+        return driver;
+    }
+
+    public  Joystick getOperatorJoystick(){
+        return operator;
+    }
+
 }
