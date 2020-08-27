@@ -7,7 +7,9 @@
 
 package frc.robot.commands.Drive;
 
+import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.Constants;
 import frc.robot.PortMap;
 import frc.robot.Robot;
@@ -17,6 +19,13 @@ public class Drive extends CommandBase {
   /**
    * Creates a new Drive.
    */
+
+  PIDController leftWheelController = new PIDController(Constants.openLoopkPLeft, Constants.openLoopkILeft, Constants.openLoopkDLeft);
+  PIDController rightWheelController = new PIDController(Constants.openLoopkPRight, Constants.openLoopkIRight, Constants.openLoopkDRight);
+
+  double leftWheelSpeed;
+  double rightWheelSpeed;
+
   public Drive() {
     addRequirements(Robot.driveTrain);
 
@@ -32,13 +41,8 @@ public class Drive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double leftDriverAxis = Robot.oi.getDriverJoystick().getRawAxis(PortMap.kSpeedAxisPort);
-    double rightDriverAxis = Robot.oi.getDriverJoystick().getRawAxis(PortMap.kTurnAxisPort);
-
-    leftDriverAxis = CommonFunctions.eliminateDeadZone(leftDriverAxis, Constants.joyDeadZone);
-    rightDriverAxis = CommonFunctions.eliminateDeadZone(rightDriverAxis, Constants.joyDeadZone);
-
-    Robot.driveTrain.setSpeed(leftDriverAxis-rightDriverAxis, leftDriverAxis+rightDriverAxis);
+    //basicDrive(Robot.oi.getDriverJoystick().getRawAxis(PortMap.kSpeedAxisPort), Robot.oi.getDriverJoystick().getRawAxis(PortMap.kTurnAxisPort));
+    driveWithGradualAcceleration(Robot.oi.getDriverJoystick().getRawAxis(PortMap.kSpeedAxisPort), Robot.oi.getDriverJoystick().getRawAxis(PortMap.kTurnAxisPort));
   }
 
   // Called once the command ends or is interrupted.
@@ -51,6 +55,24 @@ public class Drive extends CommandBase {
   @Override
   public boolean isFinished() {
     return false;
+  }
+
+  private void driveWithGradualAcceleration(double leftDriverAxis, double rightDriverAxis){
+
+    leftWheelSpeed = CommonFunctions.eliminateDeadZone(leftDriverAxis, 0.1) + rightDriverAxis;
+    rightWheelSpeed = CommonFunctions.eliminateDeadZone(leftDriverAxis, 0.1) - rightDriverAxis;
+    
+    Robot.driveTrain.setSpeed(leftWheelController.calculate(CommonFunctions.getRobotLeftWheelsSpeedRPS(),leftWheelSpeed),
+                             rightWheelController.calculate(CommonFunctions.getRobotLeftWheelsSpeedRPS() ,rightWheelSpeed));
+
+  }
+
+  private void basicDrive(double leftDriverAxis, double rightDriverAxis){
+
+    leftDriverAxis = CommonFunctions.eliminateDeadZone(leftDriverAxis, Constants.joyDeadZone);
+    rightDriverAxis = CommonFunctions.eliminateDeadZone(rightDriverAxis, Constants.joyDeadZone);
+
+    Robot.driveTrain.setSpeed(leftDriverAxis-rightDriverAxis, leftDriverAxis+rightDriverAxis);
   }
 
 }
