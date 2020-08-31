@@ -8,7 +8,6 @@
 package frc.robot.commands.Drive;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.Constants;
@@ -71,8 +70,6 @@ public class Drive extends CommandBase {
   }
 
   private void basicDrive(double leftDriverAxis, double rightDriverAxis){
-
-    rightDriverAxis = CommonFunctions.eliminateDeadZone(rightDriverAxis, 0.1);
 
     leftDriverAxis = CommonFunctions.eliminateDeadZone(leftDriverAxis, Constants.joyDeadZone);
     rightDriverAxis = CommonFunctions.eliminateDeadZone(rightDriverAxis, Constants.joyDeadZone);
