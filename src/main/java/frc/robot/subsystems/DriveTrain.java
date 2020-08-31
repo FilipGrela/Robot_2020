@@ -16,6 +16,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.PortMap;
@@ -25,29 +26,29 @@ public class DriveTrain extends SubsystemBase {
    * Creates a new DriveTrain.
    */
 
-   private WPI_TalonSRX lMaster, rMaster;
-   private WPI_VictorSPX  lSlaveF, lSlaveB, rSlaveF, rSlaveB; //F - Front , B - Back
+   public WPI_TalonSRX leftMaster, rightMaster;
+   private WPI_VictorSPX  leftSlaveFront, leftSlaveBack, rightSlaveFront, rightSlaveBack;
 
   public DriveTrain() {
-    lMaster = new WPI_TalonSRX(PortMap.kLMasterDrive);
-    rMaster = new WPI_TalonSRX(PortMap.kRMasterDrive);
+    leftMaster = new WPI_TalonSRX(PortMap.kLMasterDrive);
+    rightMaster = new WPI_TalonSRX(PortMap.kRMasterDrive);
 
-    lSlaveF = new WPI_VictorSPX(PortMap.kLSlaveMDrive);
-    lSlaveB = new WPI_VictorSPX(PortMap.kRSlaveBDrive);
-    rSlaveF = new WPI_VictorSPX(PortMap.kRSlaveMDrive);
-    rSlaveB = new WPI_VictorSPX(PortMap.kRSlaveBDrive);
+    leftSlaveFront = new WPI_VictorSPX(PortMap.kLSlaveMDrive);
+    leftSlaveBack = new WPI_VictorSPX(PortMap.kRSlaveBDrive);
+    rightSlaveFront = new WPI_VictorSPX(PortMap.kRSlaveMDrive);
+    rightSlaveBack = new WPI_VictorSPX(PortMap.kRSlaveBDrive);
 
-    configureMaster(lMaster, false);
-    configureMaster(rMaster, false);
+    configureMaster(leftMaster, false);
+    configureMaster(rightMaster, false);
 
-    lSlaveB.follow(lMaster);
-    lSlaveF.follow(lMaster);
-    rSlaveB.follow(lMaster);
-    rSlaveF.follow(lMaster);
-    stopAndReset();
+    leftSlaveBack.follow(leftMaster);
+    leftSlaveFront.follow(leftMaster);
+    rightSlaveBack.follow(leftMaster);
+    rightSlaveFront.follow(leftMaster);
+    stop();
   }
 
-  public void stopAndReset(){
+  public void stop(){
     setSpeed(0.0, 0.0);
   }
 
@@ -58,8 +59,8 @@ public class DriveTrain extends SubsystemBase {
 
   public void setSpeed(double leftSpeed, double rightSpeed){
 
-    lMaster.set(ControlMode.PercentOutput, leftSpeed);
-    rMaster.set(ControlMode.PercentOutput, rightSpeed);
+    leftMaster.set(ControlMode.PercentOutput, leftSpeed);
+    rightMaster.set(ControlMode.PercentOutput, rightSpeed);
   }
 
 
@@ -81,4 +82,22 @@ public class DriveTrain extends SubsystemBase {
     talon.configClosedloopRamp(Constants.kDriveVoltageRampRate, Constants.kLongCANTimeoutMs);
     talon.configNeutralDeadband(0.04, 0);
   }
+
+  public double getRobotWheelsSpeedAverageRPS(){
+    return ((getRobotLeftWheelsSpeedRPS()+getRobotRightWheelsSpeedRPS())/2);
+  }  
+
+  public double getRobotLeftWheelsSpeedRPS(){
+    return (-(((double)leftMaster.getSelectedSensorVelocity()/4096)*10)/3);
+  }  
+
+  public double getRobotRightWheelsSpeedRPS(){
+    return ((((double) rightMaster.getSelectedSensorVelocity()/4096)*10)/3);
+  }  
+
+  public void logsDriveTrain(){
+    SmartDashboard.putNumber("Drive_Train_Left_Wheel_RPS", getRobotLeftWheelsSpeedRPS());
+    SmartDashboard.putNumber("Drive_Train_Rignt_Wheel_RPS", getRobotRightWheelsSpeedRPS());
+  }
+
 }
