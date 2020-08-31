@@ -8,6 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * Add your docs here.
  */
@@ -31,4 +32,8 @@ public class OI {
         return operator;
     }
 
+    public void logsOi(){
+        SmartDashboard.putNumber("JoyStick_Speed_Axis", getDriverJoystick().getRawAxis(1));
+        SmartDashboard.putNumber("JoyStick_Turn_Axis", getDriverJoystick().getRawAxis(4));
+    }
 }
