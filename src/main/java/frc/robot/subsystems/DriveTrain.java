@@ -25,7 +25,7 @@ public class DriveTrain extends SubsystemBase {
    * Creates a new DriveTrain.
    */
 
-   public WPI_TalonSRX leftMaster, rightMaster;
+   private WPI_TalonSRX leftMaster, rightMaster;
    private WPI_VictorSPX  leftSlaveFront, leftSlaveBack, rightSlaveFront, rightSlaveBack;
 
   public DriveTrain() {
