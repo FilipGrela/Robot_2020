@@ -18,10 +18,8 @@ public class OI {
     public Joystick operator;
 
     public OI(){
-        
         driver = new Joystick(0);
         operator = new Joystick(1);
-
     }
 
     public  Joystick getDriverJoystick(){
