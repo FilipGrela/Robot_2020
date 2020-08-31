@@ -81,4 +81,17 @@ public class DriveTrain extends SubsystemBase {
     talon.configClosedloopRamp(Constants.kDriveVoltageRampRate, Constants.kLongCANTimeoutMs);
     talon.configNeutralDeadband(0.04, 0);
   }
+
+  public double getRobotWheelsSpeedAverageRPS(){
+    return ((getRobotLeftWheelsSpeedRPS()+getRobotRightWheelsSpeedRPS())/2);
+  }  
+
+  public double getRobotLeftWheelsSpeedRPS(){
+    return (-(((double)leftMaster.getSelectedSensorVelocity()/4096)*10)/3);
+  }  
+
+  public double getRobotRightWheelsSpeedRPS(){
+    return ((((double) rightMaster.getSelectedSensorVelocity()/4096)*10)/3);
+  }  
+
 }
