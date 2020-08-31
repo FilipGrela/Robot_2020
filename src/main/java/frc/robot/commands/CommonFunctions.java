@@ -19,4 +19,17 @@ public class CommonFunctions {
         }
         return value;
       } 
+
+    public final static double getRobotWheelsSpeedAverageRPS(){
+      return ((getRobotLeftWheelsSpeedRPS()+getRobotRightWheelsSpeedRPS())/2);
+    }  
+
+    public final static double getRobotLeftWheelsSpeedRPS(){
+      return (-(((double)Robot.driveTrain.leftMaster.getSelectedSensorVelocity()/4096)*10)/3);
+    }  
+
+    public final static double getRobotRightWheelsSpeedRPS(){
+      return ((((double)Robot.driveTrain.rightMaster.getSelectedSensorVelocity()/4096)*10)/3);
+    }  
+    
 }

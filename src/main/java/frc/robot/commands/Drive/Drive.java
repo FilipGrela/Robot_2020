@@ -59,13 +59,11 @@ public class Drive extends CommandBase {
 
   private void driveWithGradualAcceleration(double leftDriverAxis, double rightDriverAxis){
 
-    rightDriverAxis = CommonFunctions.eliminateDeadZone(rightDriverAxis, 0.1);
-
     leftWheelSpeed = CommonFunctions.eliminateDeadZone(leftDriverAxis, 0.1) + rightDriverAxis;
     rightWheelSpeed = CommonFunctions.eliminateDeadZone(leftDriverAxis, 0.1) - rightDriverAxis;
     
-    Robot.driveTrain.setSpeed(leftWheelController.calculate(Robot.driveTrain.getRobotLeftWheelsSpeedRPS(),leftWheelSpeed),
-                             rightWheelController.calculate(Robot.driveTrain.getRobotLeftWheelsSpeedRPS() ,rightWheelSpeed));
+    Robot.driveTrain.setSpeed(leftWheelController.calculate(CommonFunctions.getRobotLeftWheelsSpeedRPS(),leftWheelSpeed),
+                             rightWheelController.calculate(CommonFunctions.getRobotLeftWheelsSpeedRPS() ,rightWheelSpeed));
 
   }
 
