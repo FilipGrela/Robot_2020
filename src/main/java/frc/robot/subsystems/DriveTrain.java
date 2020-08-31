@@ -16,6 +16,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.PortMap;
@@ -93,5 +94,10 @@ public class DriveTrain extends SubsystemBase {
   public double getRobotRightWheelsSpeedRPS(){
     return ((((double) rightMaster.getSelectedSensorVelocity()/4096)*10)/3);
   }  
+
+  public void logsDriveTrain(){
+    SmartDashboard.putNumber("Drive_Train_Left_Wheel_RPS", getRobotLeftWheelsSpeedRPS());
+    SmartDashboard.putNumber("Drive_Train_Rignt_Wheel_RPS", getRobotRightWheelsSpeedRPS());
+  }
 
 }
