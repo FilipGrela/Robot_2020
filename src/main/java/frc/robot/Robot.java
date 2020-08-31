@@ -25,7 +25,7 @@ public class Robot extends TimedRobot {
   public static DriveTrain driveTrain;
   public static OI oi;
 
-  /**s
+  /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
@@ -51,7 +51,7 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
 
-    driveTrain.stop();
+    driveTrain.stopAndReset();
 
     CommandScheduler.getInstance().run();
   }
