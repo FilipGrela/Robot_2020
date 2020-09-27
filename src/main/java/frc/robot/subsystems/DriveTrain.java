@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.PortMap;
+import frc.robot.commands.Drive.Drive;
 
 public class DriveTrain extends SubsystemBase {
   /**
@@ -43,8 +44,8 @@ public class DriveTrain extends SubsystemBase {
 
     leftSlaveBack.follow(leftMaster);
     leftSlaveFront.follow(leftMaster);
-    rightSlaveBack.follow(leftMaster);
-    rightSlaveFront.follow(leftMaster);
+    rightSlaveBack.follow(rightMaster);
+    rightSlaveFront.follow(rightMaster);
     stop();
   }
 
@@ -55,12 +56,14 @@ public class DriveTrain extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    setDefaultCommand(new Drive());
+    
   }
 
   public void setSpeed(double leftSpeed, double rightSpeed){
 
     leftMaster.set(ControlMode.PercentOutput, leftSpeed);
-    rightMaster.set(ControlMode.PercentOutput, rightSpeed);
+    rightMaster.set(ControlMode.PercentOutput, -rightSpeed);
   }
 
 
@@ -88,11 +91,11 @@ public class DriveTrain extends SubsystemBase {
   }  
 
   public double getRobotLeftWheelsSpeedRPS(){
-    return (-(((double)leftMaster.getSelectedSensorVelocity()/4096)*10)/3);
+    return ((((double)leftMaster.getSelectedSensorVelocity()/4096)*10)/3);
   }  
 
   public double getRobotRightWheelsSpeedRPS(){
-    return ((((double) rightMaster.getSelectedSensorVelocity()/4096)*10)/3);
+    return (-(((double) rightMaster.getSelectedSensorVelocity()/4096)*10)/3);
   }  
 
   public void logsDriveTrain(){
@@ -101,3 +104,4 @@ public class DriveTrain extends SubsystemBase {
   }
 
 }
+ 

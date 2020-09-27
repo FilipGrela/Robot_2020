@@ -7,14 +7,17 @@
 
 package frc.robot.commands.Intake;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Flags;
+import frc.robot.Robot;
 
 public class IntakeSpinForward extends CommandBase {
   /**
    * Creates a new IntakeSpinForward.
    */
   public IntakeSpinForward() {
-    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(Robot.intake);
   }
 
   // Called when the command is initially scheduled.
@@ -25,11 +28,15 @@ public class IntakeSpinForward extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if(Flags.getFlags().intakeDown){
+      Robot.intake.intakeSpeenForward();
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    Robot.intake.intakeMotorStop();
   }
 
   // Returns true when the command should end.

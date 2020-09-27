@@ -5,18 +5,20 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-
-package frc.robot.debug;
-
-import frc.robot.Robot;
+package frc.robot;
 
 /**
  * Add your docs here.
  */
-public class DashboardLogs {
-    public void logs(){
-        Robot.driveTrain.logsDriveTrain();
-        Robot.oi.logsOi();
-        Robot.intake.intakeMoveDashboard();
+public class Flags {
+    private static Flags instance;
+	
+	public static Flags getFlags() {		
+		if ( instance == null ) {
+				instance = new Flags();
+		}
+		return instance;
     }
+
+    public boolean intakeDown = true;
 }

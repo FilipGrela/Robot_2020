@@ -10,7 +10,6 @@ package frc.robot.commands.Drive;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.Constants;
 import frc.robot.PortMap;
 import frc.robot.Robot;
@@ -22,15 +21,14 @@ public class Drive extends CommandBase {
    */
 
   PIDController leftWheelController = new PIDController(Constants.openLoopkPLeft, Constants.openLoopkILeft, Constants.openLoopkDLeft);
-  PIDController rightWheelController = new PIDController(Constants.openLoopkPRight, Constants.openLoopkIRight, Constants.openLoopkDRight);
+  PIDController rightWheelController = new PIDController(Constants.openLoopkPLeft, Constants.openLoopkILeft, Constants.openLoopkDLeft);
+ // PIDController rightWheelController = new PIDController(Constants.openLoopkPRight, Constants.openLoopkIRight, Constants.openLoopkDRight);
 
   double leftWheelSpeed;
   double rightWheelSpeed;
 
   public Drive() {
     addRequirements(Robot.driveTrain);
-
-
   }
 
   // Called when the command is initially scheduled.
@@ -62,22 +60,31 @@ public class Drive extends CommandBase {
 
     rightDriverAxis = CommonFunctions.eliminateDeadZone(rightDriverAxis, 0.1);
 
-    leftWheelSpeed = CommonFunctions.eliminateDeadZone(leftDriverAxis, 0.1) + rightDriverAxis;
-    rightWheelSpeed = CommonFunctions.eliminateDeadZone(leftDriverAxis, 0.1) - rightDriverAxis;
-    
-    Robot.driveTrain.setSpeed(leftWheelController.calculate(Robot.driveTrain.getRobotLeftWheelsSpeedRPS(),leftWheelSpeed),
-                             rightWheelController.calculate(Robot.driveTrain.getRobotLeftWheelsSpeedRPS() ,rightWheelSpeed));
+    leftWheelSpeed = 2*(CommonFunctions.eliminateDeadZone(leftDriverAxis, 0.1) - (rightDriverAxis/2));
+    rightWheelSpeed = 2*(CommonFunctions.eliminateDeadZone(leftDriverAxis, 0.1) + (rightDriverAxis/2));
 
+
+    
+    Robot.driveTrain.setSpeed(leftWheelController.calculate(Robot.driveTrain.getRobotLeftWheelsSpeedRPS(), leftWheelSpeed),
+                             rightWheelController.calculate(Robot.driveTrain.getRobotRightWheelsSpeedRPS() , rightWheelSpeed));
+
+    logsDriveTrainCommand();
   }
 
   private void basicDrive(double leftDriverAxis, double rightDriverAxis){
 
     rightDriverAxis = CommonFunctions.eliminateDeadZone(rightDriverAxis, 0.1);
 
-    leftDriverAxis = CommonFunctions.eliminateDeadZone(leftDriverAxis, Constants.joyDeadZone);
-    rightDriverAxis = CommonFunctions.eliminateDeadZone(rightDriverAxis, Constants.joyDeadZone);
+    leftWheelSpeed = CommonFunctions.eliminateDeadZone(leftDriverAxis, 0.1) - (rightDriverAxis/2);
+    rightWheelSpeed = CommonFunctions.eliminateDeadZone(leftDriverAxis, 0.1) + (rightDriverAxis/2);
 
-    Robot.driveTrain.setSpeed(leftDriverAxis-rightDriverAxis, leftDriverAxis+rightDriverAxis);
+    Robot.driveTrain.setSpeed(leftWheelSpeed, rightWheelSpeed);
+    logsDriveTrainCommand();
+  }
+
+  public void logsDriveTrainCommand(){
+    SmartDashboard.putNumber("Drive_Train_Command_Target_Left", leftWheelSpeed);
+    SmartDashboard.putNumber("Drive_Train_Command_Target_Right", rightWheelSpeed);
   }
 
 }

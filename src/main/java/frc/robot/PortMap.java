@@ -18,7 +18,7 @@ public class PortMap {
 
     // Joystick
     public static final int kSpeedAxisPort = 1;
-    public static final int kTurnAxisPort = 4;
+    public static final int kTurnAxisPort = 2;
 
     // DriveTrain
     public static final int kLMasterDrive = 0;

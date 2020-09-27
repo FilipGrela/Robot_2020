@@ -36,9 +36,10 @@ public class Constants {
     public static final double kWheelCircuit = Math.PI*kWheelDiameter; // circuit in meters
     public static final double kTrackWidthMeters = 0.5;
 
-    public static final double openLoopkPLeft = 0.104;
-    public static final double openLoopkILeft = 0.00034;
-    public static final double openLoopkDLeft = 0.000245;
+    public static final double openLoopkPLeft = 0.35;
+    public static final double openLoopkILeft = 0.0012;
+    public static final double openLoopkDLeft = 0.0005;
+
     public static final double openLoopkPRight = 0.104;
     public static final double openLoopkIRight = 0.00035;
     public static final double openLoopkDRight = 0.000255;
